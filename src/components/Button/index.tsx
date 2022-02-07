@@ -1,6 +1,6 @@
 import React from "react";
-import { gestureHandlerRootHOC, RectButtonProperties } from "react-native-gesture-handler";
-import { Container, Load, Title, TypeProps } from "./styles";
+import { RectButtonProperties } from "react-native-gesture-handler";
+import { Container, ContainerButton, Load, Title, TypeProps } from "./styles";
 
 type Props = RectButtonProperties & {
   title: string;
@@ -15,18 +15,14 @@ export function Button({
   ...rest
 }: Props) {
 
-  const GestureHandlerRootView = gestureHandlerRootHOC(() => (
-      <Container
-        type={type}
-        enabled={!isLoading}
-        {...rest}
-      >
-        { isLoading ? <Load /> : <Title>{title}</Title>}
-      </Container>
-    )
-  );
-
   return(
-    <GestureHandlerRootView />
+    <Container type={type}>
+        <ContainerButton
+          enabled={!isLoading}
+          {...rest}
+        >
+        { isLoading ? <Load /> : <Title>{title}</Title>}
+      </ContainerButton>
+    </Container>
   )
 }
