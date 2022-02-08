@@ -6,6 +6,7 @@ import happyEmoji from '@assets/happy.png';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useTheme } from "styled-components/native";
 import { TouchableOpacity } from "react-native";
+import { SearchBar } from "@components/SearchBar";
 
 export function Home() {
   const { COLORS } = useTheme();
@@ -23,6 +24,11 @@ export function Home() {
             <MaterialIcons name="logout" color={ COLORS.TITLE } size={24}/>
           </TouchableOpacity>
         </Header>
+
+        <SearchBar
+          onClear={() => {}}
+          onSearch={() => {}}
+        />
       </GestureHandlerRootView>
     </Container>
   )
