@@ -7,7 +7,8 @@ type ContainerProps = {
   type: TypeProps;
 }
 
-export const Container = styled(GestureHandlerRootView)<ContainerProps>`
+export const Container = styled(RectButton)<ContainerProps>`
+  flex: 1;
   max-height: 56px;
   min-height: 56px;
   border-radius: 12px;
@@ -15,13 +16,6 @@ export const Container = styled(GestureHandlerRootView)<ContainerProps>`
   align-items: center;
 
   background-color: ${({ theme, type }) => type === 'primary' ? theme.COLORS.PRIMARY_900 : theme.COLORS.PRIMARY_800}
-`; 
-
-export const ContainerButton = styled(RectButton)`
-  height: 100%;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
 `;
 
 export const Title = styled.Text`
