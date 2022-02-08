@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ButtonBack } from "@components/ButtonBack";
 import { Photo } from "@components/Photo";
-import { Platform, ScrollView, TouchableOpacity } from "react-native";
+import { Alert, Platform, ScrollView, TouchableOpacity } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Container, Header, Title, DeleteLabel, Upload, PickImageButton, Form, InputGroup, Label, InputGroupHeader, MaxCharacters } from "./styles";
@@ -31,6 +31,24 @@ export function Product() {
       if (!result.cancelled) {
         setImage(result.uri);
       }
+    }
+  }
+
+  async function handleAdd() {
+    if (!name.trim()) {
+      return Alert.alert('Cadastro', 'Informe o nome da pizza!');
+    }
+
+    if (!description.trim()) {
+      return Alert.alert('Cadastro', 'Informe a descrição da pizza!');
+    }
+
+    if (!image) {
+      return Alert.alert('Cadastro', 'Selecione a imagem da pizza!');
+    }
+
+    if (!priceSizeP || !priceSizeM || !priceSizeG) {
+      return Alert.alert('Cadastro', 'Informe o preço de todos os tamanhos da pizza!');
     }
   }
 
@@ -101,6 +119,7 @@ export function Product() {
             <Button
               title="Cadastrar pizza"
               isLoading={isLoading}
+              onPress={handleAdd}
             />
 
           </Form>
