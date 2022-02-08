@@ -8,6 +8,8 @@ import { Container, Header, Title, DeleteLabel, Upload, PickImageButton, Form, I
 import { InputPrice } from "@components/InputPrice";
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
+import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
 
 export function Product() {
   const [image, setImage] = useState('');
@@ -50,6 +52,33 @@ export function Product() {
     if (!priceSizeP || !priceSizeM || !priceSizeG) {
       return Alert.alert('Cadastro', 'Informe o preço de todos os tamanhos da pizza!');
     }
+
+    setIsLoading(true);
+
+    const fileName = new Date().getTime();
+    const reference = storage().ref(`/pizzas/${fileName}.png`);
+
+    await reference.putFile(image);
+    const photo_url = await reference.getDownloadURL();
+
+    firestore()
+      .collection('pizzas')
+      .add({
+        name,
+        name_insensitive: name.toLocaleLowerCase().trim(),
+        description,
+        price_sizes: {
+          p: priceSizeP,
+          m: priceSizeM,
+          g: priceSizeG
+        },
+        photo_url,
+        photo_path: reference.fullPath
+      })
+      .then(() => Alert.alert('Cadastro', 'Pizza cadastrada com sucesso!'))
+      .catch(() => Alert.alert('Cadastro', 'Não foi possível cadastrar a pizza.'));
+
+    setIsLoading(false);
   }
 
   return (
