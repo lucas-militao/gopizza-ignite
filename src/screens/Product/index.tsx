@@ -5,6 +5,7 @@ import { Platform, TouchableOpacity } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Container, Header, Title, DeleteLabel, Upload, PickImageButton } from "./styles";
+import { InputPrice } from "@components/InputPrice";
 
 export function Product() {
   const [image, setImage] = useState('');
@@ -46,6 +47,10 @@ export function Product() {
             onPress={handleImagePicker}
           />
         </Upload>
+
+        <InputPrice size="P"/>
+        <InputPrice size="M"/>
+        <InputPrice size="G"/>
       </GestureHandlerRootView>
     </Container>
   )
