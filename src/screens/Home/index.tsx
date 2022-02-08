@@ -7,6 +7,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useTheme } from "styled-components/native";
 import { TouchableOpacity } from "react-native";
 import { SearchBar } from "@components/SearchBar";
+import { ProductCard } from "@components/ProductCard";
 
 export function Home() {
   const { COLORS } = useTheme();
@@ -34,6 +35,9 @@ export function Home() {
           <Title>Cardápio</Title>
           <MenuItemsNumber>10 pizzas</MenuItemsNumber>
         </MenuHeader>
+
+        <ProductCard data={{id: '1', name: 'Pizza', description: 'qualquer coisa!', photo_url: 'https://github.com/lucas-militao.png'}}/>
+        
       </GestureHandlerRootView>
     </Container>
   )
