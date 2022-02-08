@@ -1,16 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Greeting, GreetingEmoji, GreetingText, Header, MenuHeader, MenuItemsNumber, Title } from "./styles";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import happyEmoji from '@assets/happy.png';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useTheme } from "styled-components/native";
-import { Alert, TouchableOpacity } from "react-native";
+import { Alert, FlatList, TouchableOpacity } from "react-native";
 import { SearchBar } from "@components/SearchBar";
 import { ProductCard, ProductProps } from "@components/ProductCard";
 import firestore from '@react-native-firebase/firestore';
 
 export function Home() {
+  const [pizzas, setPizzas] = useState<ProductProps[]>([]);
+  const [search, setSearch] = useState('');
   const { COLORS } = useTheme();
 
   function fetchPizza(value: string) {
@@ -30,9 +32,18 @@ export function Home() {
           }
         }) as ProductProps[];
 
-        console.log(data);
+        setPizzas(data);
       })
       .catch(() => Alert.alert('Consulta', 'Não foi possível realizar a consulta!'));
+  }
+
+  function handleSearch() {
+    fetchPizza(search);
+  }
+
+  function handelSearchClear() {
+    fetchPizza('');
+    setSearch('');
   }
 
   useEffect(() => {
@@ -54,8 +65,10 @@ export function Home() {
         </Header>
 
         <SearchBar
-          onClear={() => {}}
-          onSearch={() => {}}
+          onChangeText={setSearch}
+          value={search}
+          onClear={handelSearchClear}
+          onSearch={handleSearch}
         />
 
         <MenuHeader>
@@ -63,7 +76,17 @@ export function Home() {
           <MenuItemsNumber>10 pizzas</MenuItemsNumber>
         </MenuHeader>
 
-        <ProductCard data={{id: '1', name: 'Pizza', description: 'qualquer coisa!', photo_url: 'https://github.com/lucas-militao.png'}}/>
+        <FlatList
+          data={pizzas}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => <ProductCard data={item} />}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingTop: 20,
+            paddingBottom: 125,
+            marginHorizontal: 24
+          }}
+        />
         
       </GestureHandlerRootView>
     </Container>
