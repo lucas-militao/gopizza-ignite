@@ -1,10 +1,12 @@
 import { ButtonBack } from "@components/ButtonBack";
 import { RadionButton } from "@components/RadioButton";
-import React from "react";
+import React, { useState } from "react";
 import { Platform } from "react-native";
+import { PIZZA_TYPES } from "@utils/pizzaTypes";
 import { Container, Header, Photo, Sizes } from "./styles";
 
 export function Order() {
+  const [size, setSize] = useState('');
 
   return(
     <Container behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
@@ -18,10 +20,16 @@ export function Order() {
       <Photo source={{ uri: 'http://github.com/lucas-militao.png' }}/>
 
       <Sizes>
-        <RadionButton 
-          title="Pequeno"
-          selected={false}
-        />
+        {
+          PIZZA_TYPES.map(item => (
+            <RadionButton
+              key={item.id}
+              title={item.name}
+              selected={size === item.id}
+              onPress={() => setSize(item.id)}
+            />
+          ))
+        }
       </Sizes>
     </Container>
   )
