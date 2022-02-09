@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Greeting, GreetingEmoji, GreetingText, Header, MenuHeader, MenuItemsNumber, Title } from "./styles";
+import { Container, Greeting, GreetingEmoji, GreetingText, Header, MenuHeader, MenuItemsNumber, NewProductButton, Title } from "./styles";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import happyEmoji from '@assets/happy.png';
@@ -53,6 +53,10 @@ export function Home() {
     navigation.navigate('product', { id });
   }
 
+  function handleAdd() {
+    navigation.navigate('product', {});
+  }
+
   useEffect(() => {
     fetchPizza('');
   }, []);
@@ -100,6 +104,11 @@ export function Home() {
           }}
         />
         
+        <NewProductButton
+          title="Cadastrar Pizza"
+          type="secondary"
+          onPress={handleAdd}
+        />
       </GestureHandlerRootView>
     </Container>
   )

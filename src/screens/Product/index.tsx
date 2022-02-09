@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ButtonBack } from "@components/ButtonBack";
 import { Photo } from "@components/Photo";
-import { Alert, Platform, ScrollView, TouchableOpacity } from "react-native";
+import { Alert, Platform, ScrollView, TouchableOpacity, View } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Container, Header, Title, DeleteLabel, Upload, PickImageButton, Form, InputGroup, Label, InputGroupHeader, MaxCharacters } from "./styles";
@@ -10,7 +10,7 @@ import { Input } from "@components/Input";
 import { Button } from "@components/Button";
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { ProductNavigationProps } from "src/@types/navigation";
 import { ProductProps } from "@components/ProductCard";
 
@@ -24,7 +24,6 @@ type PizzaResponse = ProductProps & {
 }
 
 export function Product() {
-  const [photo_path, setPhoto_Path] = useState('');
   const [image, setImage] = useState('');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -32,7 +31,9 @@ export function Product() {
   const [priceSizeM, setPriceSizeM] = useState('');
   const [priceSizeG, setPriceSizeG] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
+  const [photo_path, setPhoto_Path] = useState('');
+  
+  const navigation = useNavigation();
   const route = useRoute();
   const { id } = route.params as ProductNavigationProps;
   
@@ -97,6 +98,10 @@ export function Product() {
     setIsLoading(false);
   }
 
+  function handleGoBack() {
+    navigation.goBack();
+  }
+
   useEffect(() => {
     if (id) {
       firestore()
@@ -122,23 +127,30 @@ export function Product() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <GestureHandlerRootView style={{ flex: 1 }}>
           <Header>
-            <ButtonBack />
+            <ButtonBack onPress={handleGoBack} />
 
             <Title>Cadastrar</Title>
 
-            <TouchableOpacity>
-              <DeleteLabel>Deletar</DeleteLabel>
-            </TouchableOpacity>
+            {
+              !id ?
+              <TouchableOpacity>
+                <DeleteLabel>Deletar</DeleteLabel>
+              </TouchableOpacity>
+              : <View style={{ width: 20 }}/>
+            }
           </Header>
 
           <Upload>
             <Photo uri={image}/>
 
-            <PickImageButton 
-              title="Carregar" 
-              type="secondary" 
-              onPress={handleImagePicker}
-            />
+            {
+              !id &&
+              <PickImageButton 
+                title="Carregar" 
+                type="secondary" 
+                onPress={handleImagePicker}
+              />
+            }
           </Upload>
 
           <Form>
@@ -181,11 +193,14 @@ export function Product() {
                 value={priceSizeG} />
             </InputGroup>
 
-            <Button
-              title="Cadastrar pizza"
-              isLoading={isLoading}
-              onPress={handleAdd}
-            />
+            {
+              !id &&
+              <Button
+                title="Cadastrar Pizza"
+                isLoading={isLoading}
+                onPress={handleAdd}
+              />
+            }
 
           </Form>
         </GestureHandlerRootView>
