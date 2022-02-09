@@ -31,7 +31,7 @@ export function Product() {
   const [priceSizeM, setPriceSizeM] = useState('');
   const [priceSizeG, setPriceSizeG] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [photo_path, setPhoto_Path] = useState('');
+  const [photoPath, setPhotoPath] = useState('');
   
   const navigation = useNavigation();
   const route = useRoute();
@@ -102,6 +102,19 @@ export function Product() {
     navigation.goBack();
   }
 
+  function handleDelete() {
+    firestore()
+      .collection('pizzas')
+      .doc(id)
+      .delete()
+      .then(() => {
+        storage()
+          .ref(photoPath)
+          .delete()
+          .then(() => navigation.navigate('home'));
+      });
+  }
+
   useEffect(() => {
     if (id) {
       firestore()
@@ -117,7 +130,7 @@ export function Product() {
           setPriceSizeP(product.price_sizes.p);
           setPriceSizeM(product.price_sizes.m);
           setPriceSizeG(product.price_sizes.g);
-          setPhoto_Path(product.photo_path);
+          setPhotoPath(product.photo_path);
         })
     }
   }, [id])
@@ -132,8 +145,8 @@ export function Product() {
             <Title>Cadastrar</Title>
 
             {
-              !id ?
-              <TouchableOpacity>
+              id ?
+              <TouchableOpacity onPress={handleDelete}>
                 <DeleteLabel>Deletar</DeleteLabel>
               </TouchableOpacity>
               : <View style={{ width: 20 }}/>
