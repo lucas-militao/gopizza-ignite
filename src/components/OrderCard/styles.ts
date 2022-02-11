@@ -7,7 +7,7 @@ type ContainerProps = {
 export type StatusTypesProps = 'Preparando' | 'Pronto' | 'Entregue';
 
 type StatusProps = {
-  type: StatusTypesProps;
+  status: StatusTypesProps;
 }
 
 export const Container = styled.TouchableOpacity<ContainerProps>`
@@ -22,8 +22,8 @@ export const Container = styled.TouchableOpacity<ContainerProps>`
 `;
 
 export const Image = styled.Image`
-  width: 140px;
-  height: 140px;
+  width: 104px;
+  height: 104px;
   border-radius: 52px;
 `;
 
@@ -54,16 +54,16 @@ export const StatusContainer = styled.View<StatusProps>`
   align-items: center;
   justify-content: center;
 
-  ${({ theme, type }) => type === 'Preparando' && css`
+  ${({ theme, status: type }) => type === 'Preparando' && css`
     background-color: ${theme.COLORS.ALERT_50};
     border-color: ${theme.COLORS.ALERT_900};
   `}
 
-  ${({ theme, type }) => type === 'Pronto' && css`
+  ${({ theme, status: type }) => type === 'Pronto' && css`
     background-color: ${theme.COLORS.SUCCESS_900};
   `}
 
-  ${({ theme, type }) => type === 'Entregue' && css`
+  ${({ theme, status: type }) => type === 'Entregue' && css`
     background-color: ${theme.COLORS.SECONDARY_900};
   `}
 `;
@@ -72,7 +72,7 @@ export const StatusLabel = styled.Text<StatusProps>`
   font-size: 12px;
   line-height: 20px;
 
-  ${({ theme, type }) => css`
+  ${({ theme, status: type }) => css`
     font-family: ${theme.FONTS.TEXT};
     color: ${type === 'Preparando' ? theme.COLORS.ALERT_900 : theme.COLORS.TITLE};
   `}
