@@ -4,6 +4,7 @@ import { useTheme } from 'styled-components/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Orders } from '@screens/Orders';
 import { Home } from '@screens/Home';
+import { BottomMenu } from '@components/BottomMenu';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -26,11 +27,21 @@ export function UserTabRoutes() {
       <Screen 
         name='home'
         component={Home}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <BottomMenu title='Cardápio' color={color} />
+          )
+        }}
       />
 
       <Screen 
         name='orders'
         component={Orders}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <BottomMenu title='Pedidos' color={color} notifications="0" />
+          )
+        }}
       />
     </Navigator>
   );
