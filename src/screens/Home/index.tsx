@@ -10,10 +10,13 @@ import { SearchBar } from "@components/SearchBar";
 import { ProductCard, ProductProps } from "@components/ProductCard";
 import firestore from '@react-native-firebase/firestore';
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { useAuth } from "@hooks/auth";
 
 export function Home() {
   const [pizzas, setPizzas] = useState<ProductProps[]>([]);
   const [search, setSearch] = useState('');
+
+  const { user, signOut } = useAuth();
 
   const { COLORS } = useTheme();
   const navigation = useNavigation();
@@ -72,7 +75,7 @@ export function Home() {
             <GreetingText>Olá, Admin</GreetingText>
           </Greeting>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={signOut}>
             <MaterialIcons name="logout" color={ COLORS.TITLE } size={24}/>
           </TouchableOpacity>
         </Header>
@@ -106,11 +109,14 @@ export function Home() {
           }}
         />
         
-        <NewProductButton
-          title="Cadastrar Pizza"
-          type="secondary"
-          onPress={handleAdd}
-        />
+        {
+          user?.isAdmin &&
+            <NewProductButton
+              title="Cadastrar Pizza"
+              type="secondary"
+              onPress={handleAdd}
+            />
+        }
       </GestureHandlerRootView>
     </Container>
   )

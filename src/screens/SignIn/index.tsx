@@ -16,6 +16,7 @@ import {
   ForgotPasswordLabel, 
   Title } 
 from "./styles";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export function SignIn() {
   const [email, setEmail] = useState('');
@@ -32,41 +33,44 @@ export function SignIn() {
 
   return(
     <Container>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        <Content>
+      <GestureHandlerRootView style={{ flex: 1 }}>
 
-          <Brand source={brandImg}/>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+          <Content>
 
-          <Title>Login</Title>
+            <Brand source={brandImg}/>
 
-          <Input
-            placeholder="E-mail"
-            type="secondary"
-            autoCorrect={false}
-            autoCapitalize="none"
-            onChangeText={setEmail}
-          />
+            <Title>Login</Title>
 
-          <Input
-            placeholder="Senha"
-            type="secondary"
-            secureTextEntry
-            onChangeText={setPassword}
-          />
+            <Input
+              placeholder="E-mail"
+              type="secondary"
+              autoCorrect={false}
+              autoCapitalize="none"
+              onChangeText={setEmail}
+            />
 
-          <ForgotPasswordButton onPress={handleForgotPassword}>
-            <ForgotPasswordLabel>Esqueceu a senha?</ForgotPasswordLabel>
-          </ForgotPasswordButton>
-          
-          <Button
-            title="Entrar"
-            type="secondary"
-            onPress={handleSignIn}
-            isLoading={isLogging}
-          />
+            <Input
+              placeholder="Senha"
+              type="secondary"
+              secureTextEntry
+              onChangeText={setPassword}
+            />
 
-        </Content>
-      </KeyboardAvoidingView>
+            <ForgotPasswordButton onPress={handleForgotPassword}>
+              <ForgotPasswordLabel>Esqueceu a senha?</ForgotPasswordLabel>
+            </ForgotPasswordButton>
+            
+            <Button
+              title="Entrar"
+              type="secondary"
+              onPress={handleSignIn}
+              isLoading={isLogging}
+            />
+
+          </Content>
+        </KeyboardAvoidingView>
+      </GestureHandlerRootView>
     </Container>
   )
 }
