@@ -7,9 +7,15 @@ import { Container, ContentScroll, Form, FormRow, Header, InputGroup, Label, Pho
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
 
 export function Order() {
   const [size, setSize] = useState('');
+  const navigation = useNavigation();
+
+  function handleGoBack() {
+    navigation.goBack();
+  }
 
   return(
     <Container behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
@@ -18,7 +24,7 @@ export function Order() {
 
           <Header>
             <ButtonBack
-              onPress={() => {}}
+              onPress={handleGoBack}
               style={{ marginBottom: 108 }}
             />
           </Header>
