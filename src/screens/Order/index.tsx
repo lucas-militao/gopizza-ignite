@@ -11,6 +11,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import firestore from '@react-native-firebase/firestore';
 import { OrderNavigationProps } from "src/@types/navigation";
 import { ProductProps } from "@components/ProductCard";
+import { useAuth } from "@hooks/auth";
 
 type PizzaResponse = ProductProps & {
   price_sizes: {
@@ -23,6 +24,9 @@ export function Order() {
   const [pizza, setPizza] = useState<PizzaResponse>({} as PizzaResponse);
   const [quantity, setQuantity] = useState(0);
   const [tableNumber, setTableNumber] = useState('');
+  const [sendingOrder, setSendingOrder] = useState(false);
+
+  const { user } = useAuth();
 
   const navigation = useNavigation();
   const route = useRoute();
@@ -32,6 +36,40 @@ export function Order() {
 
   function handleGoBack() {
     navigation.goBack();
+  }
+
+  function handleOrder() {
+    if (!size) {
+      return Alert.alert('Pedido', 'Selecione o tamanho da pizza!');
+    }
+
+    if (!tableNumber) {
+      return Alert.alert('Pedido', 'Informe o número da mesa!');
+    }
+
+    if (!quantity) {
+      return Alert.alert('Pedido', 'Informe a quantidade');
+    }
+
+    setSendingOrder(true);
+
+    firestore()
+      .collection('orders')
+      .add({
+        quantity,
+        amount,
+        pizza: pizza.name,
+        size,
+        table_number: tableNumber,
+        status: 'Preparando',
+        waiter_id: user?.id,
+        image: pizza.photo_url
+      })
+      .then(() => navigation.navigate('home'))
+      .catch(() => {
+        Alert.alert('Pedido', 'Não foi possível realizar o pedido!');
+        setSendingOrder(false);
+      })
   }
 
   useEffect(() => {
@@ -83,7 +121,7 @@ export function Order() {
 
               <InputGroup>
                 <Label>Quantidade</Label>
-                <Input keyboardType="numeric" onChangeText={(value) => setQuantity(value)}/>
+                <Input keyboardType="numeric" onChangeText={(value) => setQuantity(parseInt(value))}/>
               </InputGroup>
             </FormRow>
 
@@ -91,6 +129,8 @@ export function Order() {
 
             <Button
               title="Confirmar pedido"
+              onPress={handleOrder}
+              isLoading={sendingOrder}
             />
           </Form>
         </ContentScroll>
