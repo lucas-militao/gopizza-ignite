@@ -5,7 +5,7 @@ import { Container, Notification, Quantity, Title } from './styles';
 type Props = {
   title: string;
   color: string;
-  notifications: string | undefined;
+  notifications?: string | undefined;
 };
 
 export function BottomMenu({ color, title, notifications }: Props) {

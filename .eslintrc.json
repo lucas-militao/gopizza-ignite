@@ -63,7 +63,9 @@
       "react/jsx-props-no-spreading": ["off"],
       "@typescript-eslint/no-empty-interface": [
         "off"
-      ]
+      ],
+      "react/require-default-props": "off",
+      "react/jsx-no-constructed-context-values": "off"
     },
 		"settings": {
 			"import/resolver": {

@@ -54,6 +54,10 @@ export function Home() {
       );
   }
 
+  async function handleSignOut() {
+    await signOut();
+  }
+
   function handleSearch() {
     fetchPizza(search);
   }
@@ -87,7 +91,7 @@ export function Home() {
             <GreetingText>Olá, Admin</GreetingText>
           </Greeting>
 
-          <TouchableOpacity onPress={signOut}>
+          <TouchableOpacity onPress={handleSignOut}>
             <MaterialIcons name="logout" color={COLORS.TITLE} size={24} />
           </TouchableOpacity>
         </Header>

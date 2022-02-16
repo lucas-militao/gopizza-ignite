@@ -4,7 +4,6 @@ import React, {
   ReactNode,
   useState,
   useEffect,
-  useMemo,
 } from 'react';
 import { Alert } from 'react-native';
 
@@ -38,17 +37,6 @@ function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [isLogging, setIsLogging] = useState(false);
 
-  const proving = useMemo(
-    () => ({
-      signIn,
-      signOut,
-      forgotPassword,
-      isLogging,
-      user,
-    }),
-    [],
-  );
-
   async function signIn(email: string, password: string) {
     if (!email || !password) {
       Alert.alert('Login', 'Informe o e-mail e a senha!');
@@ -78,6 +66,7 @@ function AuthProvider({ children }: AuthProviderProps) {
                 USER_COLLECTION,
                 JSON.stringify(userData),
               );
+
               setUser(userData);
             }
           })
@@ -146,7 +135,17 @@ function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   return (
-    <AuthContext.Provider value={proving}>{children}</AuthContext.Provider>
+    <AuthContext.Provider
+      value={{
+        signIn,
+        signOut,
+        forgotPassword,
+        isLogging,
+        user,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
   );
 }
 

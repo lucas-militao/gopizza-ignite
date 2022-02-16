@@ -5,8 +5,8 @@ import { Container, Load, Title, TypeProps } from './styles';
 
 type Props = RectButtonProperties & {
   title: string;
-  type: TypeProps;
-  isLoading: boolean;
+  type?: TypeProps;
+  isLoading?: boolean;
 };
 
 export function Button({

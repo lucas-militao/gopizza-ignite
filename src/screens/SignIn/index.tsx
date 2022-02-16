@@ -21,8 +21,8 @@ export function SignIn() {
   const [password, setPassword] = useState('');
   const { signIn, isLogging, forgotPassword } = useAuth();
 
-  function handleSignIn() {
-    signIn(email, password);
+  async function handleSignIn() {
+    await signIn(email, password);
   }
 
   function handleForgotPassword() {
