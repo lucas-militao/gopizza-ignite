@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components/native";
+import styled, { css } from 'styled-components/native';
 
 export const Container = styled.Image`
   width: 160px;
@@ -13,7 +13,7 @@ export const Placeholder = styled.View`
   justify-content: center;
   align-items: center;
 
-  border: 1px dashed ${({ theme }) => theme.COLORS.SECONDARY_900}
+  border: 1px dashed ${({ theme }) => theme.COLORS.SECONDARY_900};
 `;
 
 export const PlaceholderTitle = styled.Text`

@@ -1,14 +1,12 @@
-import styled, { css } from "styled-components/native";
-import { LinearGradient } from "expo-linear-gradient";
-import { getBottomSpace } from "react-native-iphone-x-helper";
+import { LinearGradient } from 'expo-linear-gradient';
+import { getBottomSpace } from 'react-native-iphone-x-helper';
+import styled, { css } from 'styled-components/native';
 
-export const Container = styled(LinearGradient).attrs(
-  ({theme}) => ({
-    colors: theme.COLORS.GRADIENT,
-    start: { x: 0, y: 1 },
-    end: { x: 0.5, y: 0.5 }
-  })
-)`
+export const Container = styled(LinearGradient).attrs(({ theme }) => ({
+  colors: theme.COLORS.GRADIENT,
+  start: { x: 0, y: 1 },
+  end: { x: 0.5, y: 0.5 },
+}))`
   flex: 1;
   justify-content: center;
 `;
@@ -16,8 +14,8 @@ export const Container = styled(LinearGradient).attrs(
 export const Content = styled.ScrollView.attrs({
   showVerticalScrollIndicator: false,
   contentContainerStyle: {
-    paddingBottom: getBottomSpace() + 48
-  }
+    paddingBottom: getBottomSpace() + 48,
+  },
 })`
   width: 100%;
   padding: 32px;
@@ -35,7 +33,7 @@ export const Title = styled.Text`
 `;
 
 export const Brand = styled.Image.attrs({
-  resizeMode: 'contain'
+  resizeMode: 'contain',
 })`
   height: 340px;
   margin-top: 64px;

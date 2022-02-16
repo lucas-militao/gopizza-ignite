@@ -1,18 +1,15 @@
-import React from "react";
-import { TouchableOpacityProps } from "react-native";
-import { Container, Radio, RadioButtonProps, Selected, Title } from "./styles";
+import React from 'react';
+import { TouchableOpacityProps } from 'react-native';
 
-type Props = TouchableOpacityProps & RadioButtonProps & {
-  title: string;
-}
+import { Container, Radio, RadioButtonProps, Selected, Title } from './styles';
 
-export function RadionButton({
-  title,
-  selected = false,
-  ...rest
-}: Props) {
+type Props = TouchableOpacityProps &
+  RadioButtonProps & {
+    title: string;
+  };
 
-  return(
+export function RadionButton({ title, selected = false, ...rest }: Props) {
+  return (
     <Container selected={selected} {...rest}>
       <Radio>{selected && <Selected />}</Radio>
 

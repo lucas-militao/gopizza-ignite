@@ -1,9 +1,7 @@
-import React from "react";
-import { Separator } from "./styles";
+import React from 'react';
+
+import { Separator } from './styles';
 
 export function ItemSeparator() {
-
-  return(
-    <Separator />
-  )
+  return <Separator />;
 }

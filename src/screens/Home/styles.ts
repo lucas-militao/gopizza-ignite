@@ -1,16 +1,19 @@
-import styled, { css } from "styled-components/native";
-import { LinearGradient } from "expo-linear-gradient";
-import { getBottomSpace, getStatusBarHeight } from 'react-native-iphone-x-helper';
-import { BorderlessButton } from "react-native-gesture-handler";
-import { Button } from "@components/Button";
+import { LinearGradient } from 'expo-linear-gradient';
+import {
+  getBottomSpace,
+  getStatusBarHeight,
+} from 'react-native-iphone-x-helper';
+import styled, { css } from 'styled-components/native';
+
+import { Button } from '@components/Button';
 
 export const Container = styled.View`
   flex: 1;
-  background-color: ${({ theme }) => theme.COLORS.BACKGROUND}
+  background-color: ${({ theme }) => theme.COLORS.BACKGROUND};
 `;
 
 export const Header = styled(LinearGradient).attrs(({ theme }) => ({
-  colors: theme.COLORS.GRADIENT
+  colors: theme.COLORS.GRADIENT,
 }))`
   width: 100%;
   flex-direction: row;
@@ -51,11 +54,10 @@ export const MenuHeader = styled.View`
 
 export const MenuItemsNumber = styled.Text`
   font-size: 14px
-
-  ${({ theme }) => css`
-    font-family: ${theme.FONTS.TEXT};
-    color: ${theme.COLORS.SECONDARY_900};
-  `}
+    ${({ theme }) => css`
+      font-family: ${theme.FONTS.TEXT};
+      color: ${theme.COLORS.SECONDARY_900};
+    `};
 `;
 
 export const Title = styled.Text`

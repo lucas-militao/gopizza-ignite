@@ -1,14 +1,14 @@
-import styled, { css } from "styled-components/native"
+import styled, { css } from 'styled-components/native';
 
 type ContainerProps = {
   index: number;
-}
+};
 
 export type StatusTypesProps = 'Preparando' | 'Pronto' | 'Entregue';
 
 type StatusProps = {
   status: StatusTypesProps;
-}
+};
 
 export const Container = styled.TouchableOpacity<ContainerProps>`
   width: 50%;
@@ -54,18 +54,24 @@ export const StatusContainer = styled.View<StatusProps>`
   align-items: center;
   justify-content: center;
 
-  ${({ theme, status: type }) => type === 'Preparando' && css`
-    background-color: ${theme.COLORS.ALERT_50};
-    border-color: ${theme.COLORS.ALERT_900};
-  `}
+  ${({ theme, status: type }) =>
+    type === 'Preparando' &&
+    css`
+      background-color: ${theme.COLORS.ALERT_50};
+      border-color: ${theme.COLORS.ALERT_900};
+    `}
 
-  ${({ theme, status: type }) => type === 'Pronto' && css`
-    background-color: ${theme.COLORS.SUCCESS_900};
-  `}
+  ${({ theme, status: type }) =>
+    type === 'Pronto' &&
+    css`
+      background-color: ${theme.COLORS.SUCCESS_900};
+    `}
 
-  ${({ theme, status: type }) => type === 'Entregue' && css`
-    background-color: ${theme.COLORS.SECONDARY_900};
-  `}
+  ${({ theme, status: type }) =>
+    type === 'Entregue' &&
+    css`
+      background-color: ${theme.COLORS.SECONDARY_900};
+    `}
 `;
 
 export const StatusLabel = styled.Text<StatusProps>`
@@ -74,6 +80,8 @@ export const StatusLabel = styled.Text<StatusProps>`
 
   ${({ theme, status: type }) => css`
     font-family: ${theme.FONTS.TEXT};
-    color: ${type === 'Preparando' ? theme.COLORS.ALERT_900 : theme.COLORS.TITLE};
+    color: ${type === 'Preparando'
+      ? theme.COLORS.ALERT_900
+      : theme.COLORS.TITLE};
   `}
 `;

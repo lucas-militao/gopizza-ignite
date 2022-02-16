@@ -1,32 +1,25 @@
-import React from "react";  
-import { Container, Notification, Quantity, Title } from "./styles";
+import React from 'react';
+
+import { Container, Notification, Quantity, Title } from './styles';
 
 type Props = {
   title: string;
   color: string;
-  notifications?: string | undefined;
-}
+  notifications: string | undefined;
+};
 
-export function BottomMenu({
-  color,
-  title,
-  notifications
-}: Props) {
+export function BottomMenu({ color, title, notifications }: Props) {
   const noNotifications = notifications === '0';
-  
-  return(
+
+  return (
     <Container>
       <Title color={color}>{title}</Title>
 
-      {
-        notifications && (
-          <Notification noNotifications={noNotifications}>
-            <Quantity noNotifications={noNotifications}>
-              {notifications}
-            </Quantity>
-          </Notification>
-        )
-      }
+      {notifications && (
+        <Notification noNotifications={noNotifications}>
+          <Quantity noNotifications={noNotifications}>{notifications}</Quantity>
+        </Notification>
+      )}
     </Container>
-  )
+  );
 }

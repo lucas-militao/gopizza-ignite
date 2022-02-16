@@ -1,16 +1,27 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { Container, Greeting, GreetingEmoji, GreetingText, Header, MenuHeader, MenuItemsNumber, NewProductButton, Title } from "./styles";
-import { MaterialIcons } from "@expo/vector-icons";
+import React, { useState, useCallback } from 'react';
+import { Alert, FlatList, TouchableOpacity } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useTheme } from 'styled-components/native';
 
 import happyEmoji from '@assets/happy.png';
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { useTheme } from "styled-components/native";
-import { Alert, FlatList, TouchableOpacity } from "react-native";
-import { SearchBar } from "@components/SearchBar";
-import { ProductCard, ProductProps } from "@components/ProductCard";
+import { ProductCard, ProductProps } from '@components/ProductCard';
+import { SearchBar } from '@components/SearchBar';
+import { MaterialIcons } from '@expo/vector-icons';
+import { useAuth } from '@hooks/auth';
 import firestore from '@react-native-firebase/firestore';
-import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import { useAuth } from "@hooks/auth";
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+
+import {
+  Container,
+  Greeting,
+  GreetingEmoji,
+  GreetingText,
+  Header,
+  MenuHeader,
+  MenuItemsNumber,
+  NewProductButton,
+  Title,
+} from './styles';
 
 export function Home() {
   const [pizzas, setPizzas] = useState<ProductProps[]>([]);
@@ -30,17 +41,17 @@ export function Home() {
       .startAt(formattedValue)
       .endAt(`${formattedValue}\uf8ff`)
       .get()
-      .then(response => {
-        const data = response.docs.map(doc => {
-          return {
-            id: doc.id,
-            ...doc.data(),
-          }
-        }) as ProductProps[];
+      .then((response) => {
+        const data = response.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as ProductProps[];
 
         setPizzas(data);
       })
-      .catch(() => Alert.alert('Consulta', 'Não foi possível realizar a consulta!'));
+      .catch(() =>
+        Alert.alert('Consulta', 'Não foi possível realizar a consulta!'),
+      );
   }
 
   function handleSearch() {
@@ -64,20 +75,20 @@ export function Home() {
   useFocusEffect(
     useCallback(() => {
       fetchPizza('');
-    }, [])
+    }, []),
   );
 
-  return(
+  return (
     <Container>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <Header>
           <Greeting>
-            <GreetingEmoji source={happyEmoji}/>
+            <GreetingEmoji source={happyEmoji} />
             <GreetingText>Olá, Admin</GreetingText>
           </Greeting>
 
           <TouchableOpacity onPress={signOut}>
-            <MaterialIcons name="logout" color={ COLORS.TITLE } size={24}/>
+            <MaterialIcons name="logout" color={COLORS.TITLE} size={24} />
           </TouchableOpacity>
         </Header>
 
@@ -95,30 +106,26 @@ export function Home() {
 
         <FlatList
           data={pizzas}
-          keyExtractor={item => item.id}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <ProductCard 
-              data={item} 
-              onPress={() => handleOpen(item.id)}
-            />
+            <ProductCard data={item} onPress={() => handleOpen(item.id)} />
           )}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             paddingTop: 20,
             paddingBottom: 125,
-            marginHorizontal: 24
+            marginHorizontal: 24,
           }}
         />
-        
-        {
-          user?.isAdmin &&
-            <NewProductButton
-              title="Cadastrar Pizza"
-              type="secondary"
-              onPress={handleAdd}
-            />
-        }
+
+        {user?.isAdmin && (
+          <NewProductButton
+            title="Cadastrar Pizza"
+            type="secondary"
+            onPress={handleAdd}
+          />
+        )}
       </GestureHandlerRootView>
     </Container>
-  )
+  );
 }

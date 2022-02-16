@@ -1,10 +1,12 @@
-import { ItemSeparator } from "@components/ItemSeparator";
-import { OrderCard, OrderProps } from "@components/OrderCard";
-import React, { useEffect, useState } from "react";
-import { Alert, FlatList } from "react-native";
-import { Container, Header, Title } from "./styles";
+import React, { useEffect, useState } from 'react';
+import { Alert, FlatList } from 'react-native';
+
+import { ItemSeparator } from '@components/ItemSeparator';
+import { OrderCard, OrderProps } from '@components/OrderCard';
+import { useAuth } from '@hooks/auth';
 import firestore from '@react-native-firebase/firestore';
-import { useAuth } from "@hooks/auth";
+
+import { Container, Header, Title } from './styles';
 
 export function Orders() {
   const [orders, setOrders] = useState<OrderProps[]>([]);
@@ -15,16 +17,16 @@ export function Orders() {
     Alert.alert('Pedido', 'Confirmar que a pizza foi entregue?', [
       {
         text: 'Não',
-        style: 'cancel'
+        style: 'cancel',
       },
       {
         text: 'Sim',
         onPress: () => {
           firestore().collection('orders').doc(id).update({
-            status: 'Entregue'
+            status: 'Entregue',
           });
-        }
-      }
+        },
+      },
     ]);
   }
 
@@ -32,13 +34,13 @@ export function Orders() {
     const subscribe = firestore()
       .collection('orders')
       .where('waiter_id', '==', user?.id)
-      .onSnapshot(querySnapshot => {
-        const data = querySnapshot.docs.map(doc => {
+      .onSnapshot((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => {
           return {
             id: doc.id,
-            ...doc.data()
-          }
-        }) as OrderProps[]
+            ...doc.data(),
+          };
+        }) as OrderProps[];
 
         setOrders(data);
       });
@@ -46,7 +48,7 @@ export function Orders() {
     return () => subscribe();
   }, []);
 
-  return(
+  return (
     <Container>
       <Header>
         <Title>Pedidos feitos</Title>
@@ -54,10 +56,10 @@ export function Orders() {
 
       <FlatList
         data={orders}
-        keyExtractor={item => item.id}
+        keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => (
-          <OrderCard 
-            index={index} 
+          <OrderCard
+            index={index}
             data={item}
             disabled={item.status === 'Entregue'}
             onPress={() => handlePizzaDelivered(item.id)}
@@ -69,5 +71,5 @@ export function Orders() {
         ItemSeparatorComponent={() => <ItemSeparator />}
       />
     </Container>
-  )
+  );
 }

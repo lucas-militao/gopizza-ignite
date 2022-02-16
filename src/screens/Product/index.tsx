@@ -1,18 +1,38 @@
-import React, { useEffect, useState } from "react";
-import { ButtonBack } from "@components/ButtonBack";
-import { Photo } from "@components/Photo";
-import { Alert, Platform, ScrollView, TouchableOpacity, View } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Container, Header, Title, DeleteLabel, Upload, PickImageButton, Form, InputGroup, Label, InputGroupHeader, MaxCharacters } from "./styles";
-import { InputPrice } from "@components/InputPrice";
-import { Input } from "@components/Input";
-import { Button } from "@components/Button";
+import React, { useEffect, useState } from 'react';
+import {
+  Alert,
+  Platform,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { ProductNavigationProps } from 'src/@types/navigation';
+
+import { Button } from '@components/Button';
+import { ButtonBack } from '@components/ButtonBack';
+import { Input } from '@components/Input';
+import { InputPrice } from '@components/InputPrice';
+import { Photo } from '@components/Photo';
+import { ProductProps } from '@components/ProductCard';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { ProductNavigationProps } from "src/@types/navigation";
-import { ProductProps } from "@components/ProductCard";
+import { useNavigation, useRoute } from '@react-navigation/native';
+
+import {
+  Container,
+  Header,
+  Title,
+  DeleteLabel,
+  Upload,
+  PickImageButton,
+  Form,
+  InputGroup,
+  Label,
+  InputGroupHeader,
+  MaxCharacters,
+} from './styles';
 
 type PizzaResponse = ProductProps & {
   photo_path: string;
@@ -20,8 +40,8 @@ type PizzaResponse = ProductProps & {
     p: string;
     m: string;
     g: string;
-  }
-}
+  };
+};
 
 export function Product() {
   const [image, setImage] = useState('');
@@ -32,11 +52,10 @@ export function Product() {
   const [priceSizeG, setPriceSizeG] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [photoPath, setPhotoPath] = useState('');
-  
+
   const navigation = useNavigation();
   const route = useRoute();
   const { id } = route.params as ProductNavigationProps;
-  
 
   async function handleImagePicker() {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -44,7 +63,7 @@ export function Product() {
     if (status === 'granted') {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        aspect: [4, 4]
+        aspect: [4, 4],
       });
 
       if (!result.cancelled) {
@@ -55,19 +74,23 @@ export function Product() {
 
   async function handleAdd() {
     if (!name.trim()) {
-      return Alert.alert('Cadastro', 'Informe o nome da pizza!');
+      Alert.alert('Cadastro', 'Informe o nome da pizza!');
+      return;
     }
 
     if (!description.trim()) {
-      return Alert.alert('Cadastro', 'Informe a descrição da pizza!');
+      Alert.alert('Cadastro', 'Informe a descrição da pizza!');
+      return;
     }
 
     if (!image) {
-      return Alert.alert('Cadastro', 'Selecione a imagem da pizza!');
+      Alert.alert('Cadastro', 'Selecione a imagem da pizza!');
+      return;
     }
 
     if (!priceSizeP || !priceSizeM || !priceSizeG) {
-      return Alert.alert('Cadastro', 'Informe o preço de todos os tamanhos da pizza!');
+      Alert.alert('Cadastro', 'Informe o preço de todos os tamanhos da pizza!');
+      return;
     }
 
     setIsLoading(true);
@@ -87,10 +110,10 @@ export function Product() {
         price_sizes: {
           p: priceSizeP,
           m: priceSizeM,
-          g: priceSizeG
+          g: priceSizeG,
         },
         photo_url,
-        photo_path: reference.fullPath
+        photo_path: reference.fullPath,
       })
       .then(() => navigation.navigate('home'))
       .catch(() => {
@@ -124,7 +147,7 @@ export function Product() {
         .collection('pizzas')
         .doc(id)
         .get()
-        .then(response => {
+        .then((response) => {
           const product = response.data() as PizzaResponse;
 
           setName(product.name);
@@ -134,9 +157,9 @@ export function Product() {
           setPriceSizeM(product.price_sizes.m);
           setPriceSizeG(product.price_sizes.g);
           setPhotoPath(product.photo_path);
-        })
+        });
     }
-  }, [id])
+  }, [id]);
 
   return (
     <Container behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
@@ -147,35 +170,31 @@ export function Product() {
 
             <Title>Cadastrar</Title>
 
-            {
-              id ?
+            {id ? (
               <TouchableOpacity onPress={handleDelete}>
                 <DeleteLabel>Deletar</DeleteLabel>
               </TouchableOpacity>
-              : <View style={{ width: 20 }}/>
-            }
+            ) : (
+              <View style={{ width: 20 }} />
+            )}
           </Header>
 
           <Upload>
-            <Photo uri={image}/>
+            <Photo uri={image} />
 
-            {
-              !id &&
-              <PickImageButton 
-                title="Carregar" 
-                type="secondary" 
+            {!id && (
+              <PickImageButton
+                title="Carregar"
+                type="secondary"
                 onPress={handleImagePicker}
               />
-            }
+            )}
           </Upload>
 
           <Form>
             <InputGroup>
               <Label>Nome</Label>
-              <Input 
-                onChangeText={setName}
-                value={name}
-              />
+              <Input onChangeText={setName} value={name} />
             </InputGroup>
 
             <InputGroup>
@@ -196,32 +215,33 @@ export function Product() {
             <InputGroup>
               <Label>Tamanhos e preços</Label>
 
-              <InputPrice size="P" 
-                onChangeText={setPriceSizeP} 
-                value={priceSizeP} />
-              <InputPrice 
-                size="M" 
-                onChangeText={setPriceSizeM} 
-                value={priceSizeM} />
-              <InputPrice 
-                size="G" 
-                onChangeText={setPriceSizeG} 
-                value={priceSizeG} />
+              <InputPrice
+                size="P"
+                onChangeText={setPriceSizeP}
+                value={priceSizeP}
+              />
+              <InputPrice
+                size="M"
+                onChangeText={setPriceSizeM}
+                value={priceSizeM}
+              />
+              <InputPrice
+                size="G"
+                onChangeText={setPriceSizeG}
+                value={priceSizeG}
+              />
             </InputGroup>
 
-            {
-              !id &&
+            {!id && (
               <Button
                 title="Cadastrar Pizza"
                 isLoading={isLoading}
                 onPress={handleAdd}
               />
-            }
-
+            )}
           </Form>
         </GestureHandlerRootView>
-
       </ScrollView>
     </Container>
-  )
+  );
 }

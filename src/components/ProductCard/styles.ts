@@ -1,8 +1,8 @@
-import { RectButton } from "react-native-gesture-handler";
-import styled, { css } from "styled-components/native";
+import { RectButton } from 'react-native-gesture-handler';
+import styled, { css } from 'styled-components/native';
 
 export const Container = styled.View`
-  width: 100%
+  width: 100%;
 `;
 
 export const Content = styled(RectButton)`

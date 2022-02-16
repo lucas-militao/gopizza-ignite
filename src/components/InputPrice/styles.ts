@@ -1,5 +1,5 @@
-import { TextInput } from "react-native";
-import styled, { css } from "styled-components/native";
+import { TextInput } from 'react-native';
+import styled, { css } from 'styled-components/native';
 
 export const Container = styled.View`
   width: 100%;
